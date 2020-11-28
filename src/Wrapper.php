@@ -23,18 +23,40 @@ class Wrapper
 
     private $client;
 
+    private $proxyType;
+
+    private $proxyLogin;
+
+    private $proxyPassword;
+
+    private $proxyIp;
+
+    private $proxyPort;
+
     /**
      * @param string $apiKey API ключ, можно сгенерировать здесь:
      * @see https://proxy6.net/user/developers
      */
-    public function __construct($apiKey)
+    public function __construct($apiKey, $proxyType, $proxyLogin, $proxyPassword, $proxyIp, $proxyPort)
     {
+        $this->proxyType = $proxyType;
+
+        $this->proxyLogin = $proxyLogin;
+
+        $this->proxyPassword = $proxyPassword;
+
+        $this->proxyIp = $proxyIp;
+
+        $this->proxyPort = $proxyPort;
+
         $this->apiKey = $apiKey;
 
         $this->baseUri = sprintf('https://proxy6.net/api/%s/', $this->apiKey);
 
         $this->client = new Client([
-           'base_uri' => $this->baseUri
+            'base_uri' => $this->baseUri,
+            'timeout'  => 30.0,
+            'proxy' => sprintf('%s://%s:%s@%s:%d', $this->proxyType, $this->proxyLogin, $this->proxyPassword, $this->proxyIp, $this->proxyPort)
         ]);
     }
 
@@ -212,7 +234,7 @@ class Wrapper
      */
     public function setType($ids, $type)
     {
-        if(is_array($ids))
+        if (is_array($ids))
             $ids = implode(',', $ids);
 
         $params = [
@@ -342,7 +364,7 @@ class Wrapper
      */
     public function prolong($period, $ids)
     {
-        if(is_array($ids)) {
+        if (is_array($ids)) {
             $ids = implode(',', $ids);
         }
 
