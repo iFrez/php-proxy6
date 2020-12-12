@@ -376,6 +376,37 @@ class Wrapper
         return $this->sendRequest('prolong', $params);
     }
 
+
+    /**
+     * Используется для проверки валидности (работоспособности) прокси.
+     *
+     * @param array|string|int $ids Список ID прокси в системе (строка через запятую, либо массив)
+     *
+     * Ответ (в формате stdObject):
+     * {
+     *  "status": "yes",
+     *  "user_id": "1",
+     *  "balance": "48.80",
+     *  "currency": "RUB",
+     *  "proxy_id": 15,
+     *  "proxy_status": true
+     * }
+     *
+     * @return stdClass
+    */
+    public function check($ids)
+    {
+        if (is_array($ids)) {
+            $ids = implode(',', $ids);
+        }
+
+        $params = [
+            'ids' => $ids
+        ];
+
+        return $this->sendRequest('check', $params);
+    }
+
     /**
      * Отправка запроса к API с помощью Guzzle.
      * Возвращает stdObject с разобранным JSON ответом.
