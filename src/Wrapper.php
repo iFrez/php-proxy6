@@ -250,6 +250,7 @@ class Wrapper
      *
      * @param string $old Комментарий, который нужно заменить
      * @param string $new Новый комментарий
+     * @param string $ids Перечень внутренних номеров прокси в нашей системе, через запятую
      *
      * Ответ (в формате stdObject):
      * {
@@ -262,11 +263,12 @@ class Wrapper
      *
      * @return stdClass
      */
-    public function setDescr($old, $new)
+    public function setDescr($old, $new, $ids)
     {
         $params = [
             'old' => $old,
-            'new' => $new
+            'new' => $new,
+            'ids' => $ids
         ];
 
         return $this->sendRequest('setdescr', $params);
